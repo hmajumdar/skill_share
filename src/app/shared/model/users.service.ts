@@ -22,7 +22,8 @@ export class UsersService {
 
   findAllUsersBySkill(skillInput) {
     console.log('--users--');
-      const skillsMatches$ = this.db.list('skills', {
+    console.log(skillInput);
+    const skillsMatches$ = this.db.list('skills', {
       query: {
         orderByChild: 'skill_name',
         equalTo: skillInput
