@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../shared/security/auth.service";
-import { SkillsService } from "../shared/model/skills.service";
-import { UsersService } from "../shared/model/users.service";
+import { AuthService } from '../shared/security/auth.service';
+import { SkillsService } from '../shared/model/skills.service';
+import { UsersService } from '../shared/model/users.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,10 +11,11 @@ import { Router } from '@angular/router';
 })
 export class CreateSkillComponent implements OnInit {
 
-  constructor(private auth: AuthService, private skillsService: SkillsService, private router: Router, private usersService: UsersService) { }
+  private email: String;
+  private userId: String;
 
-  private email: string;
-  private userId: string;
+  constructor(private auth: AuthService, private skillsService: SkillsService, private router: Router,
+              private usersService: UsersService) { }
 
   ngOnInit() {
     this.email = this.auth.userEmail;
@@ -27,7 +28,7 @@ export class CreateSkillComponent implements OnInit {
 
   }
 
-saveSkill(form){
+saveSkill(form) {
   this.skillsService.createNewSkill(form.value, this.userId)
     .subscribe(
       () => {

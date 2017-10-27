@@ -2,24 +2,27 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { User } from './user';
 import { Skill } from './skill';
-import { AngularFire, FirebaseRef,AngularFireDatabase } from 'angularfire2';
-import { Subject } from "rxjs/Rx";
-import { FirebaseListFactoryOpts } from "angularfire2/interfaces";
+import { Subject } from 'rxjs/Rx';
+import {FirebaseApp} from 'angularfire2';
+import { FirebaseListFactoryOpts } from 'angularfire2/interfaces';
+import {AngularFireDatabase} from 'angularfire2/database';
 
 @Injectable()
 export class UsersService {
 
   sdkDb: any;
 
-  constructor(private af: AngularFire, @Inject(FirebaseRef) fb, private db: AngularFireDatabase) {
+  constructor(@Inject(FirebaseApp) fb, private db: AngularFireDatabase) {
     this.sdkDb = fb.database().ref();
   }
 
   findAllUsers(): Observable<User[]> {
     return this.db.list('users').map(User.fromJsonList);
   }
+
   findAllUsersBySkill(skillInput) {
-    const skillsMatches$ = this.db.list('skills', {
+    console.log('--users--');
+      const skillsMatches$ = this.db.list('skills', {
       query: {
         orderByChild: 'skill_name',
         equalTo: skillInput
@@ -31,8 +34,8 @@ export class UsersService {
           .do(console.log);
   }
 
-  findUserByEmail(email: string) {
-    return this.af.database.list('users', {
+  findUserByEmail(email: String) {
+    return this.db.list('users', {
       query: {
         orderByChild: 'email',
         equalTo: email
@@ -40,7 +43,7 @@ export class UsersService {
     });
   }
 
-  findUserByEmailNew(email: string): Observable<User> {
+  findUserByEmailNew(email: String): Observable<User> {
     return this.db.list('users', {
       query: {
         orderByChild: 'email',
@@ -50,7 +53,7 @@ export class UsersService {
     }).map(results => results[0]);
   }
 
-  findSkillsForUser(email: string){
+  findSkillsForUser(email: String) {
     console.log(email);
     // get course observable we have navigated to by url.
     const user$ = this.findUserByEmailNew(email);
@@ -73,7 +76,7 @@ export class UsersService {
   }
 
 
-  createNewUser(userData:any, emailInput:string):Observable<any> {
+  createNewUser(userData: any, emailInput: String): Observable <any> {
     // prepare data we want to save. create new object passing lesson data and userId
     const userToSave = Object.assign({}, userData, { email: emailInput});
     console.log(userToSave);
@@ -88,19 +91,19 @@ export class UsersService {
     // create empty object of data to save.
     let dataToSave = {};
     // add property with URL for each table.
-    dataToSave["users/" + newUserKey] = userToSave;
-    // dataToSave["lessonsPerCourse/" + courseId + "/" + newLessonKey] = true;
+    dataToSave['users/' + newUserKey] = userToSave;
+    // dataToSave['lessonsPerCourse/' + courseId + '/' + newLessonKey] = true;
     // save into both tables at once. we will need this to edit lessons too, so separate function.
     return this.firebaseUpdate(dataToSave);
 
   }
 
 
-  saveEditedUser(userId, user):Observable<any>{
+  saveEditedUser(userId, user): Observable<any> {
     // put the user data into a blank object
     const userToSave = Object.assign({}, user);
-    //we don't want the key to be inside of the userToSave object because it's part of the url.
-    delete(userToSave.$key); 
+    // we don't want the key to be inside of the userToSave object because it's part of the url.
+    delete(userToSave.$key);
     let dataToSave = {};
     // then we save the user data inside of an object with key at users/userId
     dataToSave['users/' + userId] = userToSave;
@@ -110,7 +113,8 @@ export class UsersService {
 
 
   firebaseUpdate(dataToSave) {
-    // create rxjs subject so that we can convert it to an observable to return. we want to stay consistent and use observables rather than promises or callbacks.
+  // create rxjs subject so that we can convert it to an observable to return.
+  // we want to stay consistent and use observables rather than promises or callbacks.
     const subject = new Subject();
     this.sdkDb.update(dataToSave)
       .then(
@@ -126,8 +130,8 @@ export class UsersService {
     return subject.asObservable();
   }
 
-  findUserByKey(key){
-    return this.af.database.object('users/' + key);
+  findUserByKey(key) {
+    return this.db.object('users/' + key);
   }
 
 }

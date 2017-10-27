@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SkillsService } from '../shared/model/skills.service';
 import { Skill } from '../shared/model/skill';
-import { AuthService } from "../shared/security/auth.service";
+import {AuthService} from '../shared/security/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,7 @@ import { AuthService } from "../shared/security/auth.service";
 export class HomeComponent implements OnInit {
 
   skillsProperty: Skill[];
-  userEmail: string = 'anon';
+  userEmail: String = 'anon';
 
   constructor(private skillsService: SkillsService, private auth: AuthService) { }
 

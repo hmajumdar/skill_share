@@ -13,11 +13,11 @@ export class EditUserprofileComponent implements OnInit {
 
   user: User;
 
-  constructor(private route: ActivatedRoute, private usersService: UsersService, private router: Router, private auth: AuthService) {  
-    //receives input data for the component before component was created by router.
+  constructor(private route: ActivatedRoute, private usersService: UsersService, private router: Router, private auth: AuthService) {
+    // receives input data for the component before component was created by router.
     route.data.subscribe(
       data => this.user = data['user']
-    )
+    );
   }
 
   ngOnInit() {
@@ -27,7 +27,6 @@ export class EditUserprofileComponent implements OnInit {
   save(userData) {
   // sends user key and data from form to service
     userData['email'] = this.auth.userEmail;
-    debugger;
     this.usersService.saveEditedUser(this.user.$key, userData)
       .subscribe(
         () => {

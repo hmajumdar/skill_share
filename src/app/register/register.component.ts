@@ -13,11 +13,10 @@ export class RegisterComponent {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, 
-              private authService: AuthService,
-              private router: Router) { 
+  constructor(private fb: FormBuilder, private authService: AuthService,
+              private router: Router) {
 
-    this.form = this.fb.group({
+      this.form = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
       confirm: ['', Validators.required]
@@ -28,8 +27,8 @@ export class RegisterComponent {
   isPasswordMatch() {
     const formData = this.form.value;
     // return true only if the form data and the password field are not blank
-    // and if the password field is equal to the confirm field  
-    return formData && formData.password && formData.password == formData.confirm; 
+    // and if the password field is equal to the confirm field
+    return formData && formData.password && formData.password === formData.confirm;
   }
 
   register() {
@@ -39,7 +38,7 @@ export class RegisterComponent {
         () => {
           this.router.navigateByUrl('/new-profile');
         },
-        err => alert(err) //otherwise show error.
+        err => alert(err) // otherwise show error.
       );
   }
 

@@ -3,11 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { firebaseConfig } from "../environments/firebase.config";
-import { AngularFireModule } from "angularfire2/index";
-import { SkillsService } from "./shared/model/skills.service";
-import { UsersService } from "./shared/model/users.service";
-import { Skill } from "./shared/model/skill";
+import { firebaseConfig } from '../environments/firebase.config';
+import { SkillsService } from './shared/model/skills.service';
+import { UsersService } from './shared/model/users.service';
+import { Skill } from './shared/model/skill';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import 'rxjs/add/operator/map';
@@ -19,7 +18,6 @@ import { TopMenuComponent } from './top-menu/top-menu.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthService } from './shared/security/auth.service';
-import { authConfig } from '../environments/firebase.config';
 import { CreateUserprofileComponent } from './create-userprofile/create-userprofile.component';
 import { UserprofileFormComponent } from './userprofile-form/userprofile-form.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
@@ -27,11 +25,14 @@ import { SkillFormComponent } from './skill-form/skill-form.component';
 import { CreateSkillComponent } from './create-skill/create-skill.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { CommunitySearchComponent } from './community-search/community-search.component';
-import {AuthGuard} from "./shared/security/auth.guard";
+import {AuthGuard} from './shared/security/auth.guard';
 import { EditUserprofileComponent } from './edit-userprofile/edit-userprofile.component';
 import { UserResolver } from './shared/model/user.resolver';
 import { ViewUserComponent } from './view-user/view-user.component';
 import { EditSkillComponent } from './edit-skill/edit-skill.component';
+import {AngularFireModule} from 'angularfire2';
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {AngularFireAuthModule} from 'angularfire2/auth';
 
 @NgModule({
   declarations: [
@@ -57,10 +58,13 @@ import { EditSkillComponent } from './edit-skill/edit-skill.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig, authConfig),
-    RouterModule.forRoot(routerConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    RouterModule.forRoot(routerConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   providers: [UsersService, SkillsService, AuthService, AuthGuard, UserResolver],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

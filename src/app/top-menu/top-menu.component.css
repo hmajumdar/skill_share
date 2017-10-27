@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'brand';
-  src: url('./assets/fonts/Destrukt.ttf')
+  src: url('Destrukt.ttf')
 }
 
 .navbar {
